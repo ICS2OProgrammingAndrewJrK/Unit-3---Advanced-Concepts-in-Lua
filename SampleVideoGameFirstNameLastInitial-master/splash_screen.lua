@@ -21,7 +21,7 @@ display.setStatusBar(display.HiddenStatusBar)
 --SOUNDS 
 -----------------------------------------------------------------------------------------
 
-local goinghigherSound = audio.loadSound("Sound/goinghigher.mp3")--Setting a variable to an mp3 file
+local goinghigherSound = audio.loadSound("Sounds/goinghigher.mp3")--Setting a variable to an mp3 file
 local goinghigherChannel 
 local goinghigherSoundChannel = audio.play(goinghigherSound)
 
