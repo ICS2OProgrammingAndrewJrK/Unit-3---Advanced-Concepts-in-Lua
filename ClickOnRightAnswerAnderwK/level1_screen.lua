@@ -78,11 +78,25 @@ local level1Text
 -- Boolean variable that states if user clicked the answer or not
 local alreadyClickedAnswer = false
 
-
 -----------------------------------------------------------------------------------------
 -- SOUND
 -----------------------------------------------------------------------------------------
+-- sounds variables
+local correctSound = audio.loadSound("Sounds/CorrectAnswer.mp3")
+local correctSoundChannel
 
+local incorrectSound = audio.loadSound("Sounds/WrongBuzzer.mp3")
+local incorrectSoundChannel
+
+local youloseSound = audio.loadSound("Sounds/monsterSound.wav")
+local youloseSoundChannel
+
+local youwinSound = audio.loadSound("Sounds/wu.mp3")
+local youwinSoundChannel
+
+local bkgSound = audio.loadSound("Sounds/level1Music.wav")
+local bkgSoundChannel
+bkgSoundChannel = audio.play(bkgSound)
 
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
@@ -143,7 +157,7 @@ local function LoseScreenTransition( )
 end 
 
 -- Function that transitions to Lose Screen
-local function LoseScreenTransition( )        
+local function WinScreenTransition( )        
     composer.gotoScene( "you_Win", {effect = "zoomInOutFade", time = 1000})
 end 
 
@@ -178,6 +192,10 @@ local function RestartScene()
     -- if they have 0 lives, go to the You Lose screen
     if (lives == 0) then
         composer.gotoScene("you_lose")
+        youloseSoundChannel = audio.play(youloseSound)
+        audio.stop(bkgSoundChannel)
+
+
     else 
 
         DisplayAddEquation()
@@ -185,6 +203,24 @@ local function RestartScene()
         DisplayAnswers()
     end
 end
+
+local function CheckPoints()
+        -- monitor points till they reach 2
+    if (numberCorrect == 2) then
+
+        -- display the you win screen
+        composer.gotoScene("you_Win")
+
+        --play you win sound
+        youwinSoundChannel = audio.play(youwinSound)
+
+        --stop bkg music
+        audio.stop(bkgSoundChannel)
+
+        
+    end
+end
+
 
 -- Functions that checks if the buttons have been clicked.
 local function TouchListenerAnswer(touch)
@@ -200,8 +236,13 @@ local function TouchListenerAnswer(touch)
             correct.isVisible = true
             -- increase the number correct by 1
             numberCorrect = numberCorrect + 1
+
+            --play you correctSound
+            correctSoundChannel = audio.play(correctSound)
+
             -- call RestartScene after 1 second
             timer.performWithDelay( 1000, RestartScene )
+            CheckPoints()
             
         end        
 
@@ -222,7 +263,8 @@ local function TouchListenerWrongAnswer1(touch)
             lives = lives - 1
             -- call RestartScene after 1 second
             timer.performWithDelay( 1000, RestartScene ) 
-            incorrect.isVisible = true           
+            incorrect.isVisible = true
+            incorrectSoundChannel = audio.play(incorrectSound)              
         end        
 
     end
@@ -243,7 +285,8 @@ local function TouchListenerWrongAnswer2(touch)
                 lives = lives - 1
                 -- call RestartScene after 1 second
                 timer.performWithDelay( 1000, RestartScene ) 
-                incorrect.isVisible = true           
+                incorrect.isVisible = true  
+                incorrectSoundChannel = audio.play(incorrectSound)            
             end        
     
         end
@@ -264,7 +307,8 @@ local function TouchListenerWrongAnswer3(touch)
                 lives = lives - 1
                 -- call RestartScene after 1 second
                 timer.performWithDelay( 1000, RestartScene )
-                incorrect.isVisible = true           
+                incorrect.isVisible = true    
+                incorrectSoundChannel = audio.play(incorrectSound)      
             end        
     
         end
@@ -393,7 +437,7 @@ function scene:show( event )
     elseif ( phase == "did" ) then
 
         -- initialize the number of lives and number correct 
-        lives = 3
+        lives = 2
         numberCorrect = 0
 
         -- listeners to each of the answer text objects
@@ -401,6 +445,7 @@ function scene:show( event )
 
         -- call the function to restart the scene
         RestartScene()
+
     end
 
 end
@@ -429,8 +474,10 @@ function scene:hide( event )
     -----------------------------------------------------------------------------------------
 
     elseif ( phase == "did" ) then
-    end
+        --play you win sound
+        
 
+    end
 end
 
 -----------------------------------------------------------------------------------------
