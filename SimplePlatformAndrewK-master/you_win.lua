@@ -33,8 +33,11 @@ local bkg
 
 ----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------
--- LOCAL FUNCTIONS
+-- SOUNDS
 -----------------------------------------------------------------------------------------
+local cartoon014Sound = audio.loadSound("Sounds/cartoon014.wav")
+local cartoon014SoundChannel
+cartoon014SoundChannel = audio.play(cartoon014Sound)
 
 --------------------------------------------------------------------------------------
 -- The function called when the screen doesn't exist
@@ -83,6 +86,8 @@ function scene:show( event )
         -- Called when the scene is now on screen.
         -- Insert code here to make the scene come alive.
         -- Example: start timers, begin animation, play audio, etc.
+        --play you Cheer sound
+        CheerSoundChannel = audio.play(CheerSound)
     end
 
 end

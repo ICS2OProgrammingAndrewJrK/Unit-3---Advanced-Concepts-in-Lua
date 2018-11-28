@@ -28,6 +28,26 @@ sceneName = "level1_screen"
 local scene = composer.newScene( sceneName )
 
 -----------------------------------------------------------------------------------------
+-- SOUND
+-----------------------------------------------------------------------------------------
+-- sounds variables
+local BoingSound = audio.loadSound("Sounds/BoingSoundEffect.mp3")
+local BoingSoundChannel
+
+local CheerSound = audio.loadSound("Sounds/Cheer.m4a")
+local CheerSoundChannel
+
+local Grease_MonkeySound = audio.loadSound("Sounds/Grease_Monkey.mp3")
+local Grease_MonkeySoundChannel
+
+local YouLoseSound = audio.loadSound("Sounds/YouLose.mp3")
+local YouLoseSoundChannel
+
+local cartoon014Sound = audio.loadSound("Sounds/cartoon014.wav")
+local cartoon014SoundChannel
+cartoon014SoundChannel = audio.play(cartoon014Sound)
+
+-----------------------------------------------------------------------------------------
 -- LOCAL VARIABLES
 -----------------------------------------------------------------------------------------
 
@@ -38,7 +58,7 @@ local platform1
 local platform2
 local platform3
 local platform4
-local platform5
+
 
 local spikes1
 local spikes2
@@ -175,6 +195,10 @@ end
 
 local function YouLoseTransition()
     composer.gotoScene( "you_lose" )
+
+    --play you win sound
+    YouloseSoundChannel = audio.play(youloseSound)
+
 end
 
 local function onCollision( self, event )
@@ -261,6 +285,12 @@ local function onCollision( self, event )
             if (questionsAnswered == 3) then
                 -- after getting 3 questions right, go to the you win screen
                 composer.gotoScene( "you_win" )
+
+                --play you Cheer sound
+                CheerSoundChannel = audio.play(CheerSound)
+
+                --stop cartoon014 music
+                audio.stop(cartoon014SoundChannel)
             end
         end        
         if (event.target.myName == "door") then
@@ -268,6 +298,7 @@ local function onCollision( self, event )
             if (questionsAnswered == 4) then             
                print("***questions answered = " .. questionsAnswered)
                 YouWinTransition()
+
             end        
         end    
     end
@@ -316,7 +347,6 @@ local function AddPhysicsBodies()
     physics.addBody( platform2, "static", { density=1.0, friction=0.3, bounce=0.2 } )
     physics.addBody( platform3, "static", { density=1.0, friction=0.3, bounce=0.2 } )
     physics.addBody( platform4, "static", { density=1.0, friction=0.3, bounce=0.2 } )
-    physics.addBody( platform5, "static", { density=1.0, friction=0.3, bounce=0.2 } )
 
     physics.addBody( spikes1, "static", { density=1.0, friction=0.3, bounce=0.2 } )
     physics.addBody( spikes2, "static", { density=1.0, friction=0.3, bounce=0.2 } )
@@ -421,12 +451,6 @@ function scene:create( event )
         
     sceneGroup:insert( platform4 )
 
-
-    platform5 = display.newImageRect("Images/Level-1Platform1.png", 180, 50)
-    platform5.x = display.contentWidth *5.7 / 5
-    platform5.y = display.contentHeight * 1.3 / 5
-        
-    sceneGroup:insert( platform5 )
 
     spikes1 = display.newImageRect("Images/Level-1Spikes1.png", 250, 50)
     spikes1.x = display.contentWidth * 3 / 8

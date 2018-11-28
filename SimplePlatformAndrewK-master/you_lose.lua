@@ -1,3 +1,4 @@
+
 -----------------------------------------------------------------------------------------
 --
 -- SceneTemplate.lua
@@ -31,10 +32,13 @@ local scene = composer.newScene( sceneName )
 -- local variables for the scene
 local bkg
 
+
 ----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------
--- LOCAL FUNCTIONS
+--SOUNDS
 -----------------------------------------------------------------------------------------
+local YouLoseSound = audio.loadSound("Sounds/YouLose.mp3")
+local YouLoseSoundChannel
 
 --------------------------------------------------------------------------------------
 -- The function called when the screen doesn't exist
@@ -83,6 +87,9 @@ function scene:show( event )
         -- Called when the scene is now on screen.
         -- Insert code here to make the scene come alive.
         -- Example: start timers, begin animation, play audio, etc.
+
+        --play you win sound
+        YouloseSoundChannel = audio.play(YouLoseSound)
     end
 
 end

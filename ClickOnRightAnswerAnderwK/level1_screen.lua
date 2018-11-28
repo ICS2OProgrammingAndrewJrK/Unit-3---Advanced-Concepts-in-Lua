@@ -72,6 +72,7 @@ local congratulationText
 -- Displays text that says correct.
 local correct 
 local incorrect
+
 -- Displays the level text of time text
 local level1Text 
 
@@ -157,8 +158,13 @@ local function LoseScreenTransition( )
 end 
 
 -- Function that transitions to Lose Screen
+
 local function WinScreenTransition( )        
     composer.gotoScene( "you_Win", {effect = "zoomInOutFade", time = 1000})
+
+local function LoseScreenTransition( )        
+    composer.gotoScene( "you_win", {effect = "zoomInOutFade", time = 1000})
+
 end 
 
 -- The function that displays the equation and determines the answer and the wrong answers
@@ -187,13 +193,19 @@ local function RestartScene()
     incorrect.isVisible = false
 
     livesText.text = "Number of lives = " .. tostring(lives)
-    numberCorrectText.text = "Number correct = " .. tostring(numberCorrect)
+    numberCorrectText.text = "NumberCorrect = " .. tostring(numberCorrect)
 
     -- if they have 0 lives, go to the You Lose screen
     if (lives == 0) then
         composer.gotoScene("you_lose")
+
         youloseSoundChannel = audio.play(youloseSound)
         audio.stop(bkgSoundChannel)
+
+
+    elseif
+        (Correct == 3) then
+        composer.gotoScene("you_win")
 
 
     else 
@@ -380,8 +392,8 @@ function scene:create( event )
     congratulationText:setTextColor(57/255, 230/255, 0)
     congratulationText.isVisible = false
 
-    -- create the text object that will say Correct, set the colour and then hide it
-    correct = display.newText("Correct", display.contentWidth/2, display.contentHeight*1/3, nil, 50 )
+    -- create the text object that will say correct, set the colour and then hide it
+    correct = display.newText("correct", display.contentWidth/2, display.contentHeight*1/3, nil, 50 )
     correct:setTextColor(100/255, 47/255, 210/255)
     correct.isVisible = false
 
