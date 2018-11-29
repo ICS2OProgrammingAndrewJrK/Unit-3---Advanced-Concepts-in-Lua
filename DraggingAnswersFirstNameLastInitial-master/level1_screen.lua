@@ -247,7 +247,8 @@ end
 local function TouchListenerAnswerbox(touch)
     --only work if none of the other boxes have been touched
     if (alternateAnswerBox1AlreadyTouched == false) and 
-        (alternateAnswerBox2AlreadyTouched == false) then
+        (alternateAnswerBox2AlreadyTouched == false) and
+        (alternateAnswerBox3AlreadyTouched == false) then
 
         if (touch.phase == "began") then
 
@@ -291,7 +292,8 @@ end
 local function TouchListenerAnswerBox1(touch)
     --only work if none of the other boxes have been touched
     if (answerboxAlreadyTouched == false) and 
-        (alternateAnswerBox2AlreadyTouched == false) then
+        (alternateAnswerBox2AlreadyTouched == false) and
+        (alternateAnswerBox3AlreadyTouched == false) then
 
         if (touch.phase == "began") then
             --let other boxes know it has been clicked
@@ -331,7 +333,8 @@ end
 local function TouchListenerAnswerBox2(touch)
     --only work if none of the other boxes have been touched
     if (answerboxAlreadyTouched == false) and 
-        (alternateAnswerBox1AlreadyTouched == false) then
+        (alternateAnswerBox1AlreadyTouched == false) and
+        (alternateAnswerBox3AlreadyTouched == false) then
 
         if (touch.phase == "began") then
             --let other boxes know it has been clicked
@@ -371,7 +374,8 @@ end
 local function TouchListenerAnswerBox3(touch)
     --only work if none of the other boxes have been touched
     if (answerboxAlreadyTouched == false) and 
-        (alternateAnswerBoxAlreadyTouched == false) then
+        (alternateAnswerBox1AlreadyTouched == false) and
+        (alternateAnswerBox2AlreadyTouched == false) then
 
         if (touch.phase == "began") then
             --let other boxes know it has been clicked
@@ -383,7 +387,7 @@ local function TouchListenerAnswerBox3(touch)
             alternateAnswerBox3.y = touch.y
 
         elseif (touch.phase == "ended") then
-            alternateAnswerBox2AlreadyTouched = false
+            alternateAnswerBox3AlreadyTouched = false
 
             -- if the box is in the userAnswerBox Placeholder  go to center of placeholder
             if (((userAnswerBoxPlaceholder.x - userAnswerBoxPlaceholder.width/2) < alternateAnswerBox3.x ) and 
@@ -463,6 +467,7 @@ function scene:create( event )
     answerboxAlreadyTouched = false
     alternateAnswerBox1AlreadyTouched = false
     alternateAnswerBox2AlreadyTouched = false
+    alternateAnswerBox3AlreadyTouched = false
 
     --create answerbox alternate answers and the boxes to show them
     answerbox = display.newText("", display.contentWidth * 0.9, 0, nil, 100)

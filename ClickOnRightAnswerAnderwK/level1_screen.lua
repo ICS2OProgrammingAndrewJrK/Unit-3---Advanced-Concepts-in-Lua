@@ -162,9 +162,6 @@ end
 local function WinScreenTransition( )        
     composer.gotoScene( "you_Win", {effect = "zoomInOutFade", time = 1000})
 
-local function LoseScreenTransition( )        
-    composer.gotoScene( "you_win", {effect = "zoomInOutFade", time = 1000})
-
 end 
 
 -- The function that displays the equation and determines the answer and the wrong answers

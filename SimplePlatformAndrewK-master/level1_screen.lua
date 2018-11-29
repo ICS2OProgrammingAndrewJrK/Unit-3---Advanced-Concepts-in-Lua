@@ -34,8 +34,8 @@ local scene = composer.newScene( sceneName )
 local BoingSound = audio.loadSound("Sounds/BoingSoundEffect.mp3")
 local BoingSoundChannel
 
-local CheerSound = audio.loadSound("Sounds/Cheer.m4a")
-local CheerSoundChannel
+local MoSound = audio.loadSound("Sounds/Mo.mp3")
+local MoSoundChannel
 
 local Grease_MonkeySound = audio.loadSound("Sounds/Grease_Monkey.mp3")
 local Grease_MonkeySoundChannel
@@ -43,9 +43,9 @@ local Grease_MonkeySoundChannel
 local YouLoseSound = audio.loadSound("Sounds/YouLose.mp3")
 local YouLoseSoundChannel
 
-local cartoon014Sound = audio.loadSound("Sounds/cartoon014.wav")
-local cartoon014SoundChannel
-cartoon014SoundChannel = audio.play(cartoon014Sound)
+local Grease_MonkeySound = audio.loadSound("Sounds/Grease_Monkey.mp3")
+local Grease_MonkeySoundChannel
+Grease_MonkeySoundChannel = audio.play(Grease_MonkeySound)
 
 -----------------------------------------------------------------------------------------
 -- LOCAL VARIABLES
@@ -198,7 +198,9 @@ local function YouLoseTransition()
 
     --play you win sound
     YouloseSoundChannel = audio.play(youloseSound)
-
+    
+    --stop cartoon014 music
+    audio.stop(Grease_MonkeySoundChannel)
 end
 
 local function onCollision( self, event )
@@ -287,10 +289,10 @@ local function onCollision( self, event )
                 composer.gotoScene( "you_win" )
 
                 --play you Cheer sound
-                CheerSoundChannel = audio.play(CheerSound)
+                MoSoundChannel = audio.play(MOSound)
 
                 --stop cartoon014 music
-                audio.stop(cartoon014SoundChannel)
+                audio.stop(Grease_MonkeySoundChannel)
             end
         end        
         if (event.target.myName == "door") then
@@ -374,7 +376,7 @@ local function RemovePhysicsBodies()
     physics.removeBody(platform2)
     physics.removeBody(platform3)
     physics.removeBody(platform4)
-    physics.removeBody(platform5)
+
 
     physics.removeBody(spikes1)
     physics.removeBody(spikes2)
