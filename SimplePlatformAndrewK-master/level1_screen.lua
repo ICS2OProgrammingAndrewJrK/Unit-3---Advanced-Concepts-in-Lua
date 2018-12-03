@@ -37,9 +37,6 @@ local BoingSoundChannel
 local MoSound = audio.loadSound("Sounds/Mo.mp3")
 local MoSoundChannel
 
-local Grease_MonkeySound = audio.loadSound("Sounds/Grease_Monkey.mp3")
-local Grease_MonkeySoundChannel
-
 local YouLoseSound = audio.loadSound("Sounds/YouLose.mp3")
 local YouLoseSoundChannel
 
