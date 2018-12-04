@@ -8,6 +8,7 @@
 --with piant a trivia question will come up. they will have a limided time to click on the answer
 -----------------------------------------------------------------------------------------
 
+
 -----------------------------------------------------------------------------------------
 -- INITIALIZATIONS
 -----------------------------------------------------------------------------------------
@@ -37,7 +38,6 @@ local questionText
 
 local firstNumber
 local secondNumber
-local thridNumber
 
 local answer
 local wrongAnswer1
@@ -55,10 +55,8 @@ local cover
 
 local X1 = display.contentWidth*2/7
 local X2 = display.contentWidth*4/7
-local X3 = display.contentWidth*6/7
 local Y1 = display.contentHeight*1/2
-local Y2 = display.contentHeight*5.7/7
-local Y3 = display.contentHeight*6.7/7
+local Y2 = display.contentHeight*5.5/7
 
 local userAnswer
 local textTouched = false
@@ -120,7 +118,6 @@ local function TouchListenerWrongAnswer3(touch)
     end 
 end
 
-
 --adding the event listeners 
 local function AddTextListeners ( )
     answerText:addEventListener( "touch", TouchListenerAnswer )
@@ -134,22 +131,21 @@ local function RemoveTextListeners()
     answerText:removeEventListener( "touch", TouchListenerAnswer )
     wrongText1:removeEventListener( "touch", TouchListenerWrongAnswer)
     wrongText2:removeEventListener( "touch", TouchListenerWrongAnswer2)
-    wrongText3:removeEventListener( "touch", TouchListenerWrongAnswer3)    
+    wrongText3:removeEventListener( "touch", TouchListenerWrongAnswer3)
 end
 
 local function DisplayQuestion()
     --creating random numbers
-    firstNumber = math.random (0,15)
-    secondNumber = math.random (0,15)
-    thridNumber = math.random (0,15)
+    firstNumber = math.random (0,20)
+    secondNumber = math.random (5,15)
 
     -- calculate answer
-    answer = firstNumber + secondNumber + thridNumber
+    answer = firstNumber + secondNumber
 
     -- calculate wrong answers
-    wrongAnswer1 = answer + math.random(1, 3)
-    wrongAnswer2 = answer + math.random(4, 6)
-    wrongAnswer3 = answer + math.random(7, 9)
+    wrongAnswer1 = answer + math.random(1, 6)
+    wrongAnswer2 = answer + math.random(7, 9)
+    wrongAnswer3 = answer + math.random(10, 12)
 
     --creating the question depending on the selcetion number
     questionText.text = firstNumber .. " + " .. secondNumber .. " ="
@@ -160,13 +156,13 @@ local function DisplayQuestion()
     --creating wrong answers
     wrongText1.text = wrongAnswer1
     wrongText2.text = wrongAnswer2
-    wrongText2.text = wrongAnswer3
+    wrongText3.text = wrongAnswer3
 end
 
 local function PositionAnswers()
 
     --creating random start position in a cretain area
-    answerPosition = math.random(1,4)
+    answerPosition = math.random(1,3)
 
     if (answerPosition == 1) then
 
@@ -179,8 +175,10 @@ local function PositionAnswers()
         wrongText2.x = X1
         wrongText2.y = Y2
 
-        wrongText3.x = X1
+        wrongText3.x = X2
         wrongText3.y = Y2
+        
+
         
     elseif (answerPosition == 2) then
 
@@ -194,7 +192,8 @@ local function PositionAnswers()
         wrongText2.y = Y1
 
         wrongText3.x = X2
-        wrongText3.y = Y1
+        wrongText3.y = Y2
+
 
     elseif (answerPosition == 3) then
 
@@ -206,24 +205,9 @@ local function PositionAnswers()
             
         wrongText2.x = X1
         wrongText2.y = Y1
- 
+            
         wrongText3.x = X2
         wrongText3.y = Y2
-
-    elseif (answerPosition == 4) then
-
-        answerText.x = X3
-        answerText.y = Y1
-            
-        wrongText1.x = X1
-        wrongText1.y = Y3
-            
-        wrongText2.x = X3
-        wrongText2.y = Y1
-
-        wrongText3.x = X1
-        wrongText3.y = Y1 
-
     end
 end
 
@@ -259,7 +243,7 @@ function scene:create( event )
     wrongText1.anchorX = 0
     wrongText2 = display.newText("", X1, Y1, Arial, 75)
     wrongText2.anchorX = 0
-    wrongText3 = display.newText("", X2, Y1, Arial, 75)
+    wrongText3 = display.newText("", X2, Y2, Arial, 75)
     wrongText3.anchorX = 0
 
     -----------------------------------------------------------------------------------------
@@ -272,6 +256,8 @@ function scene:create( event )
     sceneGroup:insert(wrongText1)
     sceneGroup:insert(wrongText2)
     sceneGroup:insert(wrongText3)
+    
+
 
 end --function scene:create( event )
 
@@ -352,9 +338,5 @@ scene:addEventListener( "create", scene )
 scene:addEventListener( "show", scene )
 scene:addEventListener( "hide", scene )
 scene:addEventListener( "destroy", scene )
-
-
-
------------------------------------------------------------------------------------------
 
 return scene

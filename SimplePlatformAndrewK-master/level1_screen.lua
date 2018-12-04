@@ -141,6 +141,7 @@ local function RemoveArrowEventListeners()
     rArrow:removeEventListener("touch", right)
     uArrow:removeEventListener("touch", up)
     lArrow:addEventListener("touch", left)
+    
 end
 
 local function AddRuntimeListeners()
