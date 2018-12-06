@@ -23,6 +23,24 @@ sceneName = "level1_screen"
 -- Creating Scene Object
 local scene = composer.newScene( sceneName )
 
+
+-----------------------------------------------------------------------------------------
+-- SOUND
+-----------------------------------------------------------------------------------------
+-- sounds variables
+local CorrectSound = audio.loadSound("Sounds/Correct.wav")
+local CorrectSoundChannel
+
+local booSound = audio.loadSound("Sounds/boo.mp3")
+local booSoundChannel
+
+local YouLoseSound = audio.loadSound("Sounds/YouLose.mp3")
+local YouLoseSoundChannel
+
+local yabbadabbalaughSound = audio.loadSound("Sounds/yabbadabbalaugh.wav")
+local yabbadabbalaughSoundChannel
+yabbadabbalaughSoundChannel = audio.play(yabbadabbalaughSound)
+
 -----------------------------------------------------------------------------------------
 -- LOCAL VARIABLES
 -----------------------------------------------------------------------------------------
@@ -223,11 +241,22 @@ end
 -- Transitioning Function to YouWin screen
 local function YouWinTransitionLevel1( )
     composer.gotoScene("you_win", {effect = "fade", time = 500})
+    --play you Cheer sound
+    booSoundChannel = audio.play(booSound)
+
+    --stop cartoon014 music
+    audio.stop(yabbadabbalaughSoundChannel)
 end
 
 -- Transitioning Function to YouWin screen
 local function YouloseTransitionLevel1( )
     composer.gotoScene("you_lose", {effect = "fade", time = 500})
+
+    --play you win sound
+    YouloseSoundChannel = audio.play(youloseSound)
+    
+    --stop cartoon014 music
+    audio.stop(yabbadabbalaughSoundChannel)
 end
 
 
