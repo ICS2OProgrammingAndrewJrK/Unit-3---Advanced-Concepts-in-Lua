@@ -41,6 +41,8 @@ local yabbadabbalaughSound = audio.loadSound("Sounds/yabbadabbalaugh.wav")
 local yabbadabbalaughSoundChannel
 yabbadabbalaughSoundChannel = audio.play(yabbadabbalaughSound)
 
+-- displays the number of lives the user has
+local livesText 
 -----------------------------------------------------------------------------------------
 -- LOCAL VARIABLES
 -----------------------------------------------------------------------------------------
@@ -96,6 +98,18 @@ local booSound
 -- LOCAL FUNCTIONS
 -----------------------------------------------------------------------------------------
 
+-- Function that transitions to Lose Screen
+local function LoseScreenTransition( )        
+    composer.gotoScene( "you_lose", {effect = "zoomInOutFade", time = 1000})
+end 
+
+-- Function that transitions to Lose Screen
+
+local function WinScreenTransition( )        
+    composer.gotoScene( "you_Win", {effect = "zoomInOutFade", time = 1000})
+
+end 
+
 local function DisplayQuestion()
     local randomNumber1
     local randomNumber2
@@ -137,7 +151,7 @@ local function DetermineAlternateAnswers()
     -- generate incorrect answer and set it in the textbox
     alternateAnswer3 = correctAnswer - math.random(6, 10)
     alternateAnswerBox3.text = alternateAnswer3
-
+end
 -------------------------------------------------------------------------------------------
 -- RESET ALL X POSITIONS OF ANSWER BOXES (because the x-position is changed when it is
 -- placed into the black box)
@@ -146,12 +160,45 @@ local function DetermineAlternateAnswers()
     alternateAnswerBox1.x = display.contentWidth * 0.9
     alternateAnswerBox2.x = display.contentWidth * 0.9
     alternateAnswerBox3.x = display.contentWidth * 0.9
+end
 
+local function RestartScene()
+
+    correct.isVisible = false
+    incorrect.isVisible = false
+
+    livesText.text = "Number of lives = " .. tostring(lives)
+    numberCorrectText.text = "NumberCorrect = " .. tostring(numberCorrect)
+
+    local function YouLose()
+        if (Lives  == 0) then
+        composer.gotoScene( "you_lose" )
+        end
+    end
+
+    local function YouWin()
+        if (Correct == 3) then
+        composer.gotoScene( "you_win" )
+        end
+    end
+
+    local function CheckPoints()
+        -- monitor points till they reach 2
+    if (numberCorrect == 2) then
+
+        -- display the you win screen
+        composer.gotoScene("you_Win")
+
+        --play you win sound
+        youwinSoundChannel = audio.play(youwinSound)
+
+        --stop bkg music
+        audio.stop(bkgSoundChannel)        
+    end
 end
 
 local function PositionAnswers()
     local randomPosition
-
     -------------------------------------------------------------------------------------------
     --ROMDOMLY SELECT ANSWER BOX POSITIONS
     -----------------------------------------------------------------------------------------
@@ -327,7 +374,16 @@ local function TouchListenerAnswerBox1(touch)
         if (touch.phase == "began") then
             --let other boxes know it has been clicked
             alternateAnswerBox1AlreadyTouched = true
-            
+
+        if (answer ~= tonumber(userAnswer)) then
+            -- decrease a life
+            lives = lives - 1
+            -- call RestartScene after 1 second
+            timer.performWithDelay( 1000, RestartScene ) 
+            incorrect.isVisible = true
+            incorrectSoundChannel = audio.play(incorrectSound)              
+        end        
+    
         --drag the answer to follow the mouse
         elseif (touch.phase == "moved") then
             alternateAnswerBox1.x = touch.x
@@ -368,7 +424,16 @@ local function TouchListenerAnswerBox2(touch)
         if (touch.phase == "began") then
             --let other boxes know it has been clicked
             alternateAnswerBox2AlreadyTouched = true
-            
+
+        if (answer ~= tonumber(userAnswer)) then
+            -- decrease a life
+            lives = lives - 1
+            -- call RestartScene after 1 second
+            timer.performWithDelay( 1000, RestartScene ) 
+            incorrect.isVisible = true
+            incorrectSoundChannel = audio.play(incorrectSound)              
+        end        
+    
         elseif (touch.phase == "moved") then
             --dragging function
             alternateAnswerBox2.x = touch.x
@@ -409,7 +474,16 @@ local function TouchListenerAnswerBox3(touch)
         if (touch.phase == "began") then
             --let other boxes know it has been clicked
             alternateAnswerBox3AlreadyTouched = true
-            
+
+        if (answer ~= tonumber(userAnswer)) then
+            -- decrease a life
+            lives = lives - 1
+            -- call RestartScene after 1 second
+            timer.performWithDelay( 1000, RestartScene ) 
+            incorrect.isVisible = true
+            incorrectSoundChannel = audio.play(incorrectSound)              
+        end        
+   
         elseif (touch.phase == "moved") then
             --dragging function
             alternateAnswerBox3.x = touch.x
@@ -527,7 +601,7 @@ function scene:create( event )
     sceneGroup:insert( alternateAnswerBox2 )
     sceneGroup:insert( alternateAnswerBox3 )
     sceneGroup:insert( soccerball )
-
+    CheckPoints()
 end --function scene:create( event )
 
 -----------------------------------------------------------------------------------------
@@ -552,7 +626,8 @@ function scene:show( event )
         -- Example: start timers, begin animation, play audio, etc.
         RestartLevel1()
         AddAnswerBoxEventListeners() 
-
+        lives = 2
+        numberCorrect = 0
     end
 
 end --function scene:show( event )
